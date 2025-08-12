@@ -243,7 +243,7 @@ void SetupCBFTogglePopup::updateState() {
 }
 
 void SetupCBFTogglePopup::addCell(std::uint8_t percentage, bool on) {
-	CBFToggleManager::get()->getData().db.insert({ percentage, on });
+	CBFToggleManager::get()->getData().db.emplace(percentage, on);
 
 	CCNode* beforeNode = nullptr;
 	for (auto node : CCArrayExt<CCNode*>(m_scrollLayer->m_contentLayer->getChildren())) {

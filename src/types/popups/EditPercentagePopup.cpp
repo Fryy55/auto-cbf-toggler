@@ -152,7 +152,7 @@ void EditPercentagePopup::onConfirm(CCObject*) {
 	m_percentageField->setText(numToString(percentage));
 	m_onDisplay->toggle(on);
 	db.erase(oldPercentage);
-	db.insert({ percentage, on });
+	db.emplace(percentage, on);
 
 	onClose(nullptr);
 
