@@ -147,12 +147,12 @@ void EditPercentagePopup::onConfirm(CCObject*) {
 		return;
 
 	auto percentage = percentageOpt.value();
-	auto db = CBFToggleManager::get()->getDB();
+	auto& db = CBFToggleManager::get()->getData().db;
 
 	m_percentageField->setText(numToString(percentage));
 	m_onDisplay->toggle(on);
-	db->erase(oldPercentage);
-	db->insert({ percentage, on });
+	db.erase(oldPercentage);
+	db.insert({ percentage, on });
 
 	onClose(nullptr);
 

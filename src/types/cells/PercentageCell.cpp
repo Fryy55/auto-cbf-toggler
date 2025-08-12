@@ -27,7 +27,7 @@ bool PercentageCell::init(std::uint8_t percentage, bool on, float width) {
 
 
 
-	CBFToggleManager::get()->getDB()->insert({ percentage, on });
+	CBFToggleManager::get()->getData().db.emplace(percentage, on);
 
 
 
@@ -107,7 +107,7 @@ bool PercentageCell::init(std::uint8_t percentage, bool on, float width) {
 }
 
 void PercentageCell::onDelete(CCObject*) {
-	CBFToggleManager::get()->getDB()->erase(this->getTag());
+	CBFToggleManager::get()->getData().db.erase(this->getTag());
 	this->removeFromParent();
 
 	UpdateListStateEvent().post();

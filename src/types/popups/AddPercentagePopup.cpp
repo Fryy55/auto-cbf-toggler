@@ -1,5 +1,6 @@
 #include "AddPercentagePopup.hpp"
 
+#include "CBFToggleManager.hpp"
 #include "utils.hpp"
 #include "AddCellEvent.hpp"
 
@@ -121,7 +122,10 @@ bool AddPercentagePopup::setup() {
 void AddPercentagePopup::keyDown(enumKeyCodes key) {
 	switch (key) {
 		case KEY_Escape:
-			this->onAdd(nullptr);
+			if (CBFToggleManager::get()->getData().addOnEscape)
+				this->onAdd(nullptr);
+			else
+				this->onClose(nullptr);
 			break;
 
 		default:

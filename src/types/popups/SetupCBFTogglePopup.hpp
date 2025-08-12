@@ -14,9 +14,9 @@ public:
 private:
 	bool setup() override;
 
-	void onToggle(CCMenuItemToggler*);
-	void onIndicator(CCMenuItemToggler*);
-	void onAddOnEsc(CCMenuItemToggler*);
+	void onClose(cocos2d::CCObject*) override;
+
+	void onDebugLabel(CCMenuItemToggler*);
 
 
 	// List

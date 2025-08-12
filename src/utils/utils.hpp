@@ -4,10 +4,14 @@
 
 
 namespace cbf::utils {
+	using SEL_Toggle = void (cocos2d::CCObject::*)(CCMenuItemToggler*);
+	#define toggle_selector(...) (cbf::utils::SEL_Toggle)(&__VA_ARGS__)
 	cocos2d::CCMenu* createTogglerMenu(
 		char const* labelText,
 		char const* nodeID,
-		std::function<void (CCMenuItemToggler*)> togglerCallback,
+		bool& dataValue,
+		SEL_Toggle togglerCallback,
+		cocos2d::CCObject* callbackTarget,
 		float labelMaxWidth = 150.f,
 		std::optional<char const*> infoText = std::nullopt
 	);

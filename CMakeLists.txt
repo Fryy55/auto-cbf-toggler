@@ -21,6 +21,7 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 target_include_directories(${PROJECT_NAME}
     PRIVATE
+        ${SRC_DIR}/data
         ${SRC_DIR}/events
         ${SRC_DIR}/types/cells
         ${SRC_DIR}/types/general-purpose

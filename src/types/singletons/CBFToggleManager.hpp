@@ -1,6 +1,6 @@
 #pragma once
 
-#include <map>
+#include "SaveData.hpp"
 
 
 class CBFToggleManager final {
@@ -11,10 +11,11 @@ private:
 	CBFToggleManager();
 
 public:
-	[[nodiscard]] std::map<std::uint8_t, bool>* getDB() const { return m_db; }
-	[[nodiscard]] bool getDebugLabelSetting() const { return m_debugLabel; }
+	[[nodiscard]] SaveData& getData() { return m_data; }
 
-	void updateSettings();
+	void saveData() const;
+	//! use very sparingly!!!!! pretty much should only be used in a ctor
+	void loadData();
 
 
 	CBFToggleManager(CBFToggleManager const&) = delete;
@@ -24,6 +25,5 @@ public:
 
 private:
 	// Fields
-	std::map<std::uint8_t, bool>* m_db;
-	bool m_debugLabel;
+	SaveData m_data{};
 };

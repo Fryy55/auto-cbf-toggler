@@ -25,16 +25,16 @@ bool SetupCBFTogglePopup::setup() {
 	this->setID("SetupCBFTogglePopup"_spr);
 	m_buttonMenu->setID("close-menu");
 
-	CBFToggleManager::get()->updateSettings();
+	auto& data = CBFToggleManager::get()->getData(); // initializes the thing as well
 
 
 
 	auto enableMenu = cbf::utils::createTogglerMenu(
 		"Enabled",
 		"enable",
-		[this](CCMenuItemToggler* toggler) {
-			onToggle(toggler);
-		}
+		data.enabled,
+		nullptr,
+		this
 	);
 	enableMenu->setScale(0.7f);
 	m_mainLayer->addChildAtPosition(enableMenu, Anchor::Top, { 0.f, -50.f });
@@ -120,7 +120,7 @@ bool SetupCBFTogglePopup::setup() {
 
 
 	// add children if db has them on init
-	for (auto const& [percentage, on] : *CBFToggleManager::get()->getDB())
+	for (auto const& [percentage, on] : data.db)
 		m_scrollLayer->m_contentLayer->addChild(PercentageCell::create(percentage, on, s_listContentSize.width));
 
 
@@ -128,15 +128,12 @@ bool SetupCBFTogglePopup::setup() {
 
 
 
-	constexpr float settingsMenuCH = 60.f;
-	constexpr float settingsMenuY = 10.f;
-
 	auto settingsLabel = CCLabelBMFont::create("Settings", "goldFont.fnt");
 	settingsLabel->setID("settings-label");
 	m_mainLayer->addChildAtPosition(
 		settingsLabel,
 		Anchor::Bottom,
-		{ 0.f, settingsMenuY + settingsMenuCH + 10.f, }
+		{ 0.f, 80.f, }
 	);
 
 
@@ -145,21 +142,20 @@ bool SetupCBFTogglePopup::setup() {
 		RowLayout::create()
 			->setGrowCrossAxis(true)
 			->setCrossAxisOverflow(false)
+			->setGap(10.f)
 	);
-	settingsMenu->setContentSize(
-		{ m_mainLayer->getContentWidth() - 30.f, settingsMenuCH }
-	);
+	settingsMenu->setContentSize({ 320.f, 50.f });
 	settingsMenu->setAnchorPoint({ 0.5f, 0.f });
 	settingsMenu->setID("settings-menu");
-	m_mainLayer->addChildAtPosition(settingsMenu, Anchor::Bottom, { 0.f, settingsMenuY });
+	m_mainLayer->addChildAtPosition(settingsMenu, Anchor::Bottom, { 0.f, 10.f });
 
 	settingsMenu->addChild(
 		cbf::utils::createTogglerMenu(
 			"Show indicator",
 			"indicator",
-			[this](CCMenuItemToggler* toggler) {
-				onIndicator(toggler);
-			},
+			data.showIndicator,
+			nullptr,
+			this,
 			150.f,
 			"Shows a small <cf>indicator</c> whenever <cc>CBF</c> gets toggled <cg>on</c> or <cr>off</c>"
 		)
@@ -169,15 +165,28 @@ bool SetupCBFTogglePopup::setup() {
 			cbf::utils::createTogglerMenu(
 				"Add on Escape",
 				"add-on-esc",
-				[this](CCMenuItemToggler* toggler) {
-					onAddOnEsc(toggler);
-				},
+				data.addOnEscape,
+				nullptr,
+				this,
 				150.f,
 				"<cb>PC-only</c>\n"
 				"Toggles whether clicking <cj>Escape</c> <cg>Adds</c> percentage or <cr>Cancels</c> the popup"
 			)
 		);
 	#endif
+	settingsMenu->addChild(
+		cbf::utils::createTogglerMenu(
+			"Debug Label",
+			"debug-label",
+			data.debugLabel,
+			toggle_selector(SetupCBFTogglePopup::onDebugLabel),
+			this,
+			150.f,
+			"Puts the percentage count\n"
+			"into <cc>debug mode</c>.\n"
+			"Shows <c->Children/LoggedDatabaseInstances</c>."
+		)
+	);
 
 
 	settingsMenu->updateLayout();
@@ -185,20 +194,16 @@ bool SetupCBFTogglePopup::setup() {
 	return true;
 }
 
-void SetupCBFTogglePopup::onToggle(CCMenuItemToggler* toggler) {
+void SetupCBFTogglePopup::onClose(CCObject* sender) {
+	Popup::onClose(sender);
 
-
-	return;
-}
-
-void SetupCBFTogglePopup::onIndicator(CCMenuItemToggler* toggler) {
-
+	CBFToggleManager::get()->saveData();
 
 	return;
 }
 
-void SetupCBFTogglePopup::onAddOnEsc(CCMenuItemToggler* toggler) {
-
+void SetupCBFTogglePopup::onDebugLabel(CCMenuItemToggler* toggler) {
+	this->updateState();
 
 	return;
 }
@@ -213,11 +218,11 @@ void SetupCBFTogglePopup::updateState() {
 	);
 
 	m_percentageCountLabel->setText(
-		CBFToggleManager::get()->getDebugLabelSetting() ?
+		CBFToggleManager::get()->getData().debugLabel ?
 			fmt::format(
 				"{}/{}",
 				m_scrollLayer->m_contentLayer->getChildrenCount(),
-				CBFToggleManager::get()->getDB()->size()
+				CBFToggleManager::get()->getData().db.size()
 			)
 			:
 			numToString<std::uint32_t>(m_scrollLayer->m_contentLayer->getChildrenCount())
@@ -238,7 +243,7 @@ void SetupCBFTogglePopup::updateState() {
 }
 
 void SetupCBFTogglePopup::addCell(std::uint8_t percentage, bool on) {
-	CBFToggleManager::get()->getDB()->insert({ percentage, on });
+	CBFToggleManager::get()->getData().db.insert({ percentage, on });
 
 	CCNode* beforeNode = nullptr;
 	for (auto node : CCArrayExt<CCNode*>(m_scrollLayer->m_contentLayer->getChildren())) {
@@ -273,7 +278,7 @@ void SetupCBFTogglePopup::onDeleteAll(CCObject*) {
 		[this](auto, bool yes) {
 			if (yes) {
 				m_scrollLayer->m_contentLayer->removeAllChildren();
-				CBFToggleManager::get()->getDB()->clear();
+				CBFToggleManager::get()->getData().db.clear();
 
 				this->updateState();
 			}

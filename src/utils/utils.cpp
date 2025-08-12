@@ -9,7 +9,9 @@ using namespace geode::prelude;
 CCMenu* cbf::utils::createTogglerMenu(
 	char const* labelText,
 	char const* nodeID,
-	std::function<void (CCMenuItemToggler*)> togglerCallback,
+	bool& dataValue,
+	SEL_Toggle togglerCallback,
+	cocos2d::CCObject* callbackTarget,
 	float labelMaxWidth,
 	std::optional<char const*> infoText
 ) {
@@ -24,8 +26,14 @@ CCMenu* cbf::utils::createTogglerMenu(
 
 	auto toggler = CCMenuItemExt::createTogglerWithStandardSprites(
 		1.f,
-		std::move(togglerCallback)
+		[&dataValue, callbackTarget, togglerCallback](CCMenuItemToggler* toggler) {
+			dataValue = !dataValue;
+
+			if (togglerCallback)
+				(callbackTarget->*togglerCallback)(toggler);
+		}
 	);
+	toggler->toggle(dataValue);
 	toggler->setID(fmt::format("{}-toggler", nodeID));
 	togglerMenu->addChild(toggler);
 
@@ -83,7 +91,7 @@ std::optional<std::uint8_t> cbf::utils::validatePercentage(
 		return std::nullopt;
 	}
 
-	do if (CBFToggleManager::get()->getDB()->contains(percentage)) {
+	do if (CBFToggleManager::get()->getData().db.contains(percentage)) {
 		if (oldPercentage && percentage == oldPercentage.value())
 			break;
 

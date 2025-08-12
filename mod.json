@@ -18,14 +18,6 @@
 			]
 		}
 	},
-	"settings": {
-		"debug-label": {
-			"type": "bool",
-			"name": "Debug Label",
-			"description": "Puts the percentage count into <cc>debug mode</c>.\nShows `Children/Logged Database Instances`.",
-			"default": false
-		}
-	},
 	"tags": [
 		"offline",
 		"customization",
