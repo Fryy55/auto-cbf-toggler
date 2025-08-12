@@ -21,7 +21,12 @@ add_library(${PROJECT_NAME} SHARED ${SOURCES})
 set(SRC_DIR "${PROJECT_SOURCE_DIR}/src")
 target_include_directories(${PROJECT_NAME}
     PRIVATE
-        ${SRC_DIR}/
+        ${SRC_DIR}/events
+        ${SRC_DIR}/types/cells
+        ${SRC_DIR}/types/general-purpose
+        ${SRC_DIR}/types/popups
+        ${SRC_DIR}/types/singletons
+        ${SRC_DIR}/utils
 )
 
 if (NOT DEFINED ENV{GEODE_SDK})
@@ -39,6 +44,6 @@ else()
     # My everything fails to download :broken_heart:
     setup_geode_mod(${PROJECT_NAME}
         EXTERNALS
-            #geode.node-ids
+            geode.node-ids
     )
 endif()

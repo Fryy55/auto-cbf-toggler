@@ -11,6 +11,21 @@
 	"version": "v1.0.0",
 	"developer": "Fryy_55",
 	"description": "Automatically toggles CBF upon reaching set %",
+	"resources": {
+		"spritesheets": {
+			"UISheet": [
+				"resources/sheets/ui/*.png"
+			]
+		}
+	},
+	"settings": {
+		"debug-label": {
+			"type": "bool",
+			"name": "Debug Label",
+			"description": "Puts the percentage count into <cc>debug mode</c>.\nShows `Children/Logged Database Instances`.",
+			"default": false
+		}
+	},
 	"tags": [
 		"offline",
 		"customization",
@@ -22,6 +37,9 @@
 		"community": "https://discord.com/invite/4vqtjfdhTk"
 	},
 	"dependencies": {
-		
+		"geode.node-ids": {
+			"version": ">=v1.21.1",
+			"importance": "required"
+		}
 	}
 }

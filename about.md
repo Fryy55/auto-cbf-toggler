@@ -1,4 +1,5 @@
 # Auto CBF Toggler
+###### requested by [heronardo](user:29289739)
 
 Allows you to set percentages to toggle CBF on/off mid attempt.
 
