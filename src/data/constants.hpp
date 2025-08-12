@@ -5,6 +5,6 @@ namespace constants::defaults {
 	inline constexpr bool enabled = true;
 
 	inline constexpr bool showIndicator = true;
-	constexpr inline bool addOnEscape = false;
-	constexpr inline bool debugLabel = false;
+	inline constexpr bool addOnEscape = false;
+	inline constexpr bool debugLabel = false;
 }
