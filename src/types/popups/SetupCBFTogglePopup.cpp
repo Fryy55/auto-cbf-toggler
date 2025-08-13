@@ -157,7 +157,7 @@ bool SetupCBFTogglePopup::setup() {
 			nullptr,
 			this,
 			150.f,
-			"Shows a small <cf>indicator</c> whenever <cc>CBF</c> gets toggled <cg>on</c> or <cr>off</c>"
+			"Shows a small <cf>indicator</c> on the top right whenever <cc>CBF</c> gets toggled <cg>on</c> or <cr>off</c>"
 		)
 	);
 	#ifdef GEODE_DESKTOP

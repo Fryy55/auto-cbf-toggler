@@ -1,9 +1,12 @@
 # Auto CBF Toggler
 ###### requested by [heronardo](user:29289739)
 
-Allows you to set percentages to toggle CBF on/off mid attempt.
+Allows you to set percentages to toggle CBF on/off mid-attempt.
 
 <cr>**This mod is considered a cheat, and therefore can get your records rejected from lists!**</c>
+
+## Known Issues
+Toggling CBF <cg>on</c> mid-attempt makes your input stuck for a couple seconds. This is <cr>not</c> related to this mod and is a quirk of how CBF itself works, there is nothing I can do about it.
 
 ## Support and feedback
 You can leave your feedback in the Issues tab or by joining my [Discord server](https://discord.com/invite/4vqtjfdhTk)

@@ -5,7 +5,7 @@
 using namespace geode::prelude;
 
 
-class $modify(PlayLayer) {
+class $modify(HPlayLayer, PlayLayer) {
 	struct Fields {
 		std::unordered_map<std::uint8_t, bool> m_map{};
 		CCSprite* m_indicator = nullptr;
@@ -14,6 +14,8 @@ class $modify(PlayLayer) {
 
 		bool& m_enabled = CBFToggleManager::get()->getData().enabled;
 		bool& m_showIndicator = CBFToggleManager::get()->getData().showIndicator;
+
+		bool m_wasOn = false;
 	};
 
 	$override
@@ -39,11 +41,10 @@ class $modify(PlayLayer) {
 	void resetLevel() {
 		PlayLayer::resetLevel();
 
+		m_fields->m_map.clear();
+
 		if (!m_fields->m_enabled)
 			return;
-
-
-		m_fields->m_map.clear();
 
 		for (auto const& [percentage, on] : CBFToggleManager::get()->getData().db)
 			m_fields->m_map.emplace(percentage, on);
@@ -60,6 +61,8 @@ class $modify(PlayLayer) {
 
 
 		if (m_fields->m_map.contains(percentage)) {
+			m_fields->m_wasOn = true;
+
 			bool on = m_fields->m_map[percentage];
 
 			m_fields->m_cbf->setSettingValue("soft-toggle", !on);
@@ -78,5 +81,24 @@ class $modify(PlayLayer) {
 		}
 
 		return percentage;
+	}
+};
+
+
+#include <Geode/modify/EndLevelLayer.hpp>
+
+class $modify(EndLevelLayer) {
+	$override
+	void customSetup() {
+		EndLevelLayer::customSetup();
+
+		bool& wasOn = static_cast<HPlayLayer*>(m_playLayer)->m_fields->m_wasOn;
+
+		if (wasOn)
+			m_sideMenu->getChildByID("leaderboard-button")->setPositionY(122.f);
+
+		wasOn = false;
+
+		return;
 	}
 };
