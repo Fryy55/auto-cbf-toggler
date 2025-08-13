@@ -47,5 +47,6 @@ else()
     setup_geode_mod(${PROJECT_NAME}
         EXTERNALS
             geode.node-ids
+            syzzi.click_between_frames
     )
 endif()

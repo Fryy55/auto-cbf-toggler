@@ -42,6 +42,10 @@
 		"geode.node-ids": {
 			"version": ">=v1.21.1",
 			"importance": "required"
+		},
+		"syzzi.click_between_frames": {
+			"version": ">=v1.4.6",
+			"importance": "required"
 		}
 	}
 }
