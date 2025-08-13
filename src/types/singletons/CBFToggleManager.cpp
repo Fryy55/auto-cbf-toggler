@@ -39,6 +39,7 @@ void CBFToggleManager::loadData() {
 
 	if (!std::filesystem::exists(filePath)) {
 		log::info("No file found, using defaults.");
+		m_data = {};
 		return;
 	}
 

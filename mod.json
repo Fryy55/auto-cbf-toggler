@@ -18,6 +18,16 @@
 			]
 		}
 	},
+	"settings": {
+		"edit-config-button": {
+			"type": "custom:setup-popup-button",
+			"name": "Edit configuration"
+		},
+		"reset-hint": {
+			"type": "custom:reset-title",
+			"name": "To reset data to default, use the button on the bottom left!"
+		}
+	},
 	"tags": [
 		"offline",
 		"customization",

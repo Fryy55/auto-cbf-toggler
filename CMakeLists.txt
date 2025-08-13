@@ -26,6 +26,7 @@ target_include_directories(${PROJECT_NAME}
         ${SRC_DIR}/types/cells
         ${SRC_DIR}/types/general-purpose
         ${SRC_DIR}/types/popups
+        ${SRC_DIR}/types/settingsV3
         ${SRC_DIR}/types/singletons
         ${SRC_DIR}/utils
 )
