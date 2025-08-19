@@ -8,7 +8,7 @@
 	},
 	"id": "fryy_55.auto-cbf-toggler",
 	"name": "Auto CBF Toggler",
-	"version": "v1.0.0",
+	"version": "v1.0.1",
 	"developer": "Fryy_55",
 	"description": "Automatically toggles CBF upon reaching set %",
 	"resources": {

@@ -94,8 +94,11 @@ class $modify(EndLevelLayer) {
 
 		bool& wasOn = static_cast<HPlayLayer*>(m_playLayer)->m_fields->m_wasOn;
 
-		if (wasOn)
-			m_sideMenu->getChildByID("leaderboard-button")->setPositionY(122.f);
+		if (wasOn) {
+			auto hideSpr = this->querySelector("hide-button")->getChildByType<CCSprite>(0);
+			hideSpr->stopAllActions();
+			hideSpr->setOpacity(125);
+		}
 
 		wasOn = false;
 
